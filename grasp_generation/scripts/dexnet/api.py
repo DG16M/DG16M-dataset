@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 from autolab_core import YamlConfig, Point, PointCloud, RigidTransform
-from meshpy import convex_decomposition, Mesh3D
+# from meshpy import convex_decomposition, Mesh3D
 
 #TODO
 #Once trimesh integration is here via meshpy remove this

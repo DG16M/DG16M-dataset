@@ -10,6 +10,7 @@ import time
 from grasp_optimization.check_contact_points_parallel import run_fc_optimization
 import random
 import trimesh
+import argparse
 
 def set_seed(seed=2828):  
     random.seed(seed)
@@ -103,9 +104,19 @@ def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500):
 def main():
     set_seed()
     
-    OBJ_PATH = '/scratch/dualarm/DA2_opt_dataset/scaled_meshes'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--meshes_path', type=str, required=True, help='Path to the meshes folder')
+    parser.add_argument('--save_path', type=str, required=True, help='Path to save the grasps')
+    parser.add_argument('--selected_meshes_txt', type=str, required=False, help='Path to the selected meshes txt file')
+    
+    args = parser.parse_args()
+    
+    
+    # OBJ_PATH = '/scratch/dualarm/DA2_opt_dataset/scaled_meshes'
+    OBJ_PATH = args.meshes_path
     # SAVE_PATH = '/scratch/dualarm/DA2_opt_dataset/our_grasps/grasps_split4/'
-    SAVE_PATH = '/scratch/dualarm/DG16M/testing'
+    # SAVE_PATH = '/scratch/dualarm/DG16M/testing'
+    SAVE_PATH = args.save_path
     os.makedirs(SAVE_PATH, exist_ok=True)
     
     try:
@@ -118,14 +129,16 @@ def main():
         
         
     # selected_meshes = open('/scratch/dualarm/DG16M/meshes_split/split_4.txt').read().split('\n')
-    selected_meshes = open('/home/dualarm/dummyhome/md/DualArm-Grasp-Gen/grasp_generation/DA2/scripts/selected_files_split.txt').read().split('\n')
+    # selected_meshes = open('/home/dualarm/dummyhome/md/DualArm-Grasp-Gen/grasp_generation/DA2/scripts/selected_files_split.txt').read().split('\n')
+    selected_meshes = open(args.selected_meshes_txt).read().split('\n') if args.selected_meshes_txt else None
     objects = os.listdir(OBJ_PATH)
 
     for object in objects:
-        if object not in selected_meshes:
-            print("Not supposed to use this. Skipping !!!", object)
-            continue
-        
+        if selected_meshes is not None:
+            if object not in selected_meshes:
+                print("Not supposed to use this. Skipping !!!", object)
+                continue
+            
         if done_objects is not None:
             if object in done_objects:
                 print("Already done. Skipping !!!", object)

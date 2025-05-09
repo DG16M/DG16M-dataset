@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+check_dataset.ipynb
+failed_grasps.txt
+regions.ipynb
+
