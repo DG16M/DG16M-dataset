@@ -1,8 +1,47 @@
 # DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps
 
-<a href="">Md Faizal Karim</a>, <a href="">Mohammed Saad Hashmi</a>, <a href="">Shreya Bollimuntha</a>, 
-<a href="">Mahesh Reddy Tapeti</a>, <a href="">Gaurav Singh</a>, <a href="">Nagamanikandan Govindan</a>, 
-<a href="">K Madhava Krishna</a>
+<a href="">Md Faizal Karim</a><sup>1</sup>, <a href="">Mohammed Saad Hashmi</a><sup>1</sup>, <a href="">Shreya Bollimuntha</a><sup>1</sup>, 
+<a href="">Mahesh Reddy Tapeti</a><sup>1</sup>, <a href="">Gaurav Singh</a><sup>1</sup>, <a href="">Nagamanikandan Govindan</a><sup>2</sup>, 
+<a href="">K Madhava Krishna</a><sup>1</sup>
+
+<sup>1</sup> Robotics Research Center, IIIT Hyderabad \
+<sup>2</sup> IIITDM Kancheepuram
+
+## Download the Dataset
+Download the dataset from <a href="https://iiithydresearch-my.sharepoint.com/personal/md_faizal_research_iiit_ac_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmd%5Ffaizal%5Fresearch%5Fiiit%5Fac%5Fin%2FDocuments%2FDG16M&ga=1">[Link]</a>.
+
+```
+>> unzip -l dg16m.zip
+
+├── dg16m/
+│   ├── dg16m/grasps 
+│       │── dg16m/grasps/554fa306799d623af7248d9dbed7a7b8.h5
+│       │── dg16m/grasps/c2ad96f56ec726d270a43c2d978e502e.h5
+│       │── .....
+│       │── dg16m/grasps/c8440e1075b1b44522de187cba227ff8.h5
+└── ├── dg16m/meshes
+        │── dg16m/meshes/554fa306799d623af7248d9dbed7a7b8.obj
+        │── dg16m/meshes/c2ad96f56ec726d270a43c2d978e502e.obj
+        │── .....
+        │── dg16m/meshes/c8440e1075b1b44522de187cba227ff8.obj                  
+```
+
+## About the Dataset
+
+```c
+./de731d4ac7341e15c58e834f0b160845.h5
+├── grasps
+│   ├── contact_forces                  (4000, 4, 3)
+│   ├── contact_points                  (4000, 4, 3)
+│   ├── fc_passing_indices              (2000)
+│   ├── fc_failed_indices               (2000)
+│   ├── grasps                          (4000, 2, 4, 4)
+│   └── loss_values                     (4000)
+└── object/
+    ├── file                            (str)
+    └── scale                           (float)
+```
+Note: Some objects may have passing/failing grasps < 2000. Use the ```fc_passing_indices``` and ```fc_failed_indices``` to sort the grasps. 
 
 ## Installation 
 
