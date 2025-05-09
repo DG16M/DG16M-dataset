@@ -7,6 +7,10 @@
 <sup>1</sup> Robotics Research Center, IIIT Hyderabad \
 <sup>2</sup> IIITDM Kancheepuram
 
+### <a href="https://dg16m.github.io/DG-16M/" target="_blank">[Project Website]</a> <a href="https://arxiv.org/abs/2503.08358" target="_blank">[Arxiv]</a>
+
+<img src="./images/qualitative_01.jpg" style="border-radius:20px">
+
 ## Download the Dataset
 Download the dataset from <a href="https://iiithydresearch-my.sharepoint.com/personal/md_faizal_research_iiit_ac_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmd%5Ffaizal%5Fresearch%5Fiiit%5Fac%5Fin%2FDocuments%2FDG16M&ga=1">[Link]</a>.
 
