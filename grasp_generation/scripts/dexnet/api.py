@@ -381,7 +381,7 @@ class DexNet(object):
             shutil.rmtree(mp_cache)
 
     @staticmethod
-    def _single_obj_grasps(dataset, obj, gripper, config, stable_pose_id=None, single_arm=False, target_num_grasps=100):
+    def _single_obj_grasps(dataset, obj, gripper, config, stable_pose_id=None, single_arm=False, target_num_grasps=100, num_workers=8):
         """ Sample grasps and compute metrics for given object, gripper, and stable pose """
 
         # create grasp sampler
@@ -403,7 +403,7 @@ class DexNet(object):
             obj, check_collisions=True,
             max_iter=10,
             grasp_gen_mult=1.25, config=config, target_num_grasps=target_num_grasps, 
-            single_arm=single_arm)
+            single_arm=single_arm, num_workers=num_workers)
         return scale, grasps
         # scale, f, d, t, grasps = sampler.generate_grasps(
         #     obj, check_collisions=True,

@@ -17,7 +17,7 @@ def set_seed(seed=2828):
     np.random.seed(seed)
     
 
-def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500):
+def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500, num_workers=8):
     config_filename = "../api_config.yaml"
     
     if not os.path.isabs(config_filename):
@@ -35,7 +35,7 @@ def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500):
 
         obj = GraspableObject3D(None, mesh)
         logger.info("Starting grasp sampling")
-        scale, grasps = DexNet._single_obj_grasps(None, obj, gripper, config, stable_pose_id=None, target_num_grasps=target_num_grasps)
+        scale, grasps = DexNet._single_obj_grasps(None, obj, gripper, config, stable_pose_id=None, target_num_grasps=target_num_grasps, num_workers=8)
         logger.info("Computed {} grasps".format(len(grasps)))
 
         return scale, grasps, gripper
@@ -56,7 +56,7 @@ def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500):
     mesh.apply_scale(scale)
     mesh.apply_translation(-mesh.centroid)
     
-    fc_passing_indices, loss_values, contact_forces, frames = run_fc_optimization(mesh, contact_points)
+    fc_passing_indices, loss_values, contact_forces, frames = run_fc_optimization(mesh, contact_points, num_workers)
     fc_failed_indices = [i for i in range(len(contact_points)) if i not in fc_passing_indices]
     
     if len(fc_passing_indices) > 2000:
@@ -108,14 +108,11 @@ def main():
     parser.add_argument('--meshes_path', type=str, required=True, help='Path to the meshes folder')
     parser.add_argument('--save_path', type=str, required=True, help='Path to save the grasps')
     parser.add_argument('--selected_meshes_txt', type=str, required=False, help='Path to the selected meshes txt file')
+    parser.add_argument('--num_workers', type=int, default=8, help='Number of workers for parallel processing')
     
     args = parser.parse_args()
     
-    
-    # OBJ_PATH = '/scratch/dualarm/DA2_opt_dataset/scaled_meshes'
     OBJ_PATH = args.meshes_path
-    # SAVE_PATH = '/scratch/dualarm/DA2_opt_dataset/our_grasps/grasps_split4/'
-    # SAVE_PATH = '/scratch/dualarm/DG16M/testing'
     SAVE_PATH = args.save_path
     os.makedirs(SAVE_PATH, exist_ok=True)
     
@@ -127,9 +124,6 @@ def main():
         
     done_objects = None
         
-        
-    # selected_meshes = open('/scratch/dualarm/DG16M/meshes_split/split_4.txt').read().split('\n')
-    # selected_meshes = open('/home/dualarm/dummyhome/md/DualArm-Grasp-Gen/grasp_generation/DA2/scripts/selected_files_split.txt').read().split('\n')
     selected_meshes = open(args.selected_meshes_txt).read().split('\n') if args.selected_meshes_txt else None
     objects = os.listdir(OBJ_PATH)
 
@@ -147,20 +141,12 @@ def main():
         start_time = time.time()
         object_path = os.path.join(OBJ_PATH, object)
         print(f"Processing: {object_path}")
-        # try:
-        num_passing, num_failed = f(object_path, SAVE_PATH, target_num_grasps=500)
+        num_passing, num_failed = f(object_path, SAVE_PATH, target_num_grasps=500, num_workers=args.num_workers)
         end_time = time.time()
         time_taken = end_time - start_time
         current_time = time.strftime('[%Y-%m-%d] [%H:%M:%S]', time.localtime())
         with open(os.path.join(SAVE_PATH, 'time_taken.txt'), 'a') as file:
             file.write(f"{object}: {time_taken} | passing: {num_passing} | failed: {num_failed} | time: {current_time}\n")
-                
-        # except Exception as e:
-        #     with open(os.path.join(SAVE_PATH, 'time_taken.txt'), 'a') as file:
-        #         file.write(f"{object}: Failed\n")
-        #         print(f"Failed: {object} | {e}")
-            
-        # file.close()
         
 if __name__ == "__main__":
     main()

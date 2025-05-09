@@ -224,7 +224,7 @@ class GraspSampler:
 
     def generate_grasps(self, graspable, target_num_grasps=None, grasp_gen_mult=1, max_iter=3,
                         sample_approach_angles=False, check_collisions=False, 
-                        vis=False, config=None, single_arm=False, **kwargs):
+                        vis=False, config=None, single_arm=False, num_workers=8, **kwargs):
         """Samples a set of grasps for an object.
         Parameters
         ----------
@@ -286,7 +286,7 @@ class GraspSampler:
             # SAMPLING: generate more than we need
             num_grasps_generate = int(grasp_gen_mult * num_grasps_remaining)
             new_grasps = self.sample_hierachical_grasps(graspable, num_grasps_generate, gripper = self.gripper,
-                                                        vis=False, **kwargs)
+                                                        vis=False, num_workers=num_workers, **kwargs)
 
             # COVERAGE REJECTION: prune grasps by distance
             pruned_grasps = []
@@ -825,7 +825,7 @@ class MeshAntipodalGraspSampler(GraspSampler):
         return grasps
 
 
-    def sample_hierachical_grasps(self, graspable, num_grasps, gripper=None,vis=False):
+    def sample_hierachical_grasps(self, graspable, num_grasps, gripper=None,vis=False, num_workers=8):
         def print_error(value):
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ")
             print(value)
@@ -878,8 +878,7 @@ class MeshAntipodalGraspSampler(GraspSampler):
         
         submesh_indices = [i for i in range(len(submesh_list))]
         
-        NUM_WORKERS = 10
-        with concurrent.futures.ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=min(num_workers, 8)) as executor:
             grasp_list = list(executor.map(self.multi_grasp, 
                                            submesh_indices, 
                                            submesh_list, 

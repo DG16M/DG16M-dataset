@@ -12,7 +12,6 @@ def set_seed(seed=28):
     np.random.seed(seed)
     
 LOSS_THRESHOLD = 1e-5
-NUM_WORKERS = 12
 
 def select_good_and_bad_grasps(losses, k=2000, initial_threshold=0.1):
     """
@@ -102,7 +101,7 @@ def run_fc_optimization_2(mesh, contact_points, object_mass=6, friction_coeff=0.
     return force_closure_passing_indices, loss_values, contact_forces, frames
    
 
-def run_fc_optimization(mesh, contact_points, object_mass=6, friction_coeff=0.4, orientation = 0):
+def run_fc_optimization(mesh, contact_points, object_mass=6, friction_coeff=0.4, orientation = 0, num_workers=8):
     force_closure_passing_indices = []
     loss_values = []
     contact_forces = []
@@ -121,7 +120,7 @@ def run_fc_optimization(mesh, contact_points, object_mass=6, friction_coeff=0.4,
     
     print("Contact normals found, starting optimization")
     
-    with concurrent.futures.ProcessPoolExecutor(max_workers=NUM_WORKERS) as executor:   
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:   
         results = list(executor.map(fc_optimization, 
                                     contact_points, 
                                     contact_normals, 
