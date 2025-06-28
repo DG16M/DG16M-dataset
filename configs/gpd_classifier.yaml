@@ -1,0 +1,21 @@
+name: gpd_classifier_Jun28
+seed: 28
+exp_dir: ./experiments/${name}
+
+train_meshes: /scratch/dualarm/DG16M/train_final.txt
+test_meshes: /scratch/dualarm/DG16M/test_final.txt
+mesh_path: /scratch/dualarm/DA2_15mar/meshes
+grasp_path: /scratch/dualarm/DG16M/dg16m/grasps
+
+save_model_path: saved_models/
+load_model_path: null
+
+use_wandb: false
+
+log_interval: 100
+val_interval: 1000
+
+batch_size: 156
+
+gripper_pcd_path: ./gripper.obj
+

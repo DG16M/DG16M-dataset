@@ -1,0 +1,33 @@
+name: cgdf_classifier_16apr
+seed: 28
+exp_dir: ./experiments/${name}
+
+# train_meshes: /scratch/dualarm/DA2_opt_dataset/train_meshes_2.txt
+# test_meshes: /scratch/dualarm/DA2_opt_dataset/test_meshes_2.txt
+# mesh_path: /scratch/dualarm/DA2_opt_dataset/scaled_meshes
+# grasp_path: /scratch/dualarm/DA2_opt_dataset/our_grasps/17thfeb
+
+train_meshes: /scratch/dualarm/DG16M/train_meshes.txt
+test_meshes: /scratch/dualarm/DG16M/test_meshes.txt
+mesh_path: /scratch/dualarm/DG16M/dg16m/meshes
+grasp_path: /scratch/dualarm/DG16M/dg16m/grasps
+
+save_model_path: saved_models/
+load_pretrained_vision_encoder: /home/dualarm/dummyhome/md/IROS/se3dif/models/model_init_vision_encoder_depth4.pth
+freeze_vision_encoder: false
+
+
+use_wandb: false
+
+log_interval: 50
+val_interval: 1000
+
+batch_size: 16
+
+gripper_pcd_path: ./gripper.obj
+params_json_path: /home/dualarm/dummyhome/md/IROS/se3dif/params.json
+
+random_rotation: false
+train_epochs: 100
+
+load_model_path: /home/dualarm/dummyhome/md/IROS/experiments/cgdf_classifier_16apr/16-04-19:12:16/saved_models/10_0.7993.pt

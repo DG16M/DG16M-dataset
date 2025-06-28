@@ -13,3 +13,5 @@ tqdm
 shapely
 rtree
 python-fcl
+wandb
+omegaconf

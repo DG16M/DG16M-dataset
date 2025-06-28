@@ -1,5 +1,7 @@
 # DG16M: A Large-Scale Dataset for Dual-Arm Grasping with Force-Optimized Grasps
 
+### Accepted at IROS 2025
+
 <a href="">Md Faizal Karim</a><sup>1</sup>, <a href="">Mohammed Saad Hashmi</a><sup>1</sup>, <a href="">Shreya Bollimuntha</a><sup>1</sup>, 
 <a href="">Mahesh Reddy Tapeti</a><sup>1</sup>, <a href="">Gaurav Singh</a><sup>1</sup>, <a href="">Nagamanikandan Govindan</a><sup>2</sup>, 
 <a href="">K Madhava Krishna</a><sup>1</sup>
@@ -49,8 +51,12 @@ Note: Some objects may have passing/failing grasps < 2000. Use the ```fc_passing
 
 ## Installation 
 
-```
+```sh
+conda create --name dg16m python=3.8 -y
+conda activate dg16m
+
 pip install -r requirements.txt
+pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118  torchaudio==2.0.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118 # only for training models and not grasp generation
 
 cd grasp_generation/meshpy
 pip install -e . 
