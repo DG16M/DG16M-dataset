@@ -14,7 +14,7 @@
 <img src="./images/qualitative_01.jpg" style="border-radius:20px">
 
 ## Download the Dataset
-Download the dataset from <a href="https://iiithydresearch-my.sharepoint.com/personal/md_faizal_research_iiit_ac_in/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmd%5Ffaizal%5Fresearch%5Fiiit%5Fac%5Fin%2FDocuments%2FDG16M&ga=1">[Link]</a>.
+Download the dataset from <a href="https://iiithydresearch-my.sharepoint.com/:u:/g/personal/md_faizal_research_iiit_ac_in/IQCfnJxQXGr3Qq32TSHA4xRBARF5nVymW8oL7zippjbFhwE?e=8d0qHp">[Link]</a>.
 
 ```
 >> unzip -l dg16m.zip
