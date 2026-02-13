@@ -113,7 +113,9 @@ def fc_optimization(contact_positions, contact_normals, weight, friction_coeff=0
         return None, None, None, None, 1000, None
     
     f_low = 0.1
-    f_high = 60
+    f_high = 70
+
+    print('Weights and friction coefficient:', weight, friction_coeff)
         
     constraints = [
         cp.norm(f1) <= f_high,
@@ -135,7 +137,7 @@ def fc_optimization(contact_positions, contact_normals, weight, friction_coeff=0
                          constraints)
     
     try:
-        problem.solve()
+        problem.solve(verbose=False)
     except Exception as e:
         # Optimization failed to solve. Return zeros and high loss value (1000) to remove these outliers. 
         # Observed about < 10 grasps fail to be solved. Safe to remove them. 

@@ -56,7 +56,9 @@ def f(OBJ_FILENAME, SAVE_PATH, return_grasps=False, target_num_grasps=500, num_w
     mesh.apply_scale(scale)
     mesh.apply_translation(-mesh.centroid)
     
-    fc_passing_indices, loss_values, contact_forces, frames = run_fc_optimization(mesh, contact_points, num_workers)
+    fc_passing_indices, loss_values, contact_forces, frames = run_fc_optimization(mesh=mesh, 
+                                                                                  contact_points=contact_points, 
+                                                                                  num_workers=num_workers)
     fc_failed_indices = [i for i in range(len(contact_points)) if i not in fc_passing_indices]
     
     if len(fc_passing_indices) > 2000:
@@ -141,7 +143,7 @@ def main():
         start_time = time.time()
         object_path = os.path.join(OBJ_PATH, object)
         print(f"Processing: {object_path}")
-        num_passing, num_failed = f(object_path, SAVE_PATH, target_num_grasps=500, num_workers=args.num_workers)
+        num_passing, num_failed = f(object_path, SAVE_PATH, target_num_grasps=300, num_workers=args.num_workers)
         end_time = time.time()
         time_taken = end_time - start_time
         current_time = time.strftime('[%Y-%m-%d] [%H:%M:%S]', time.localtime())

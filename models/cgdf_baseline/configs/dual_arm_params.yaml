@@ -1,0 +1,74 @@
+Description: "Configuration file for dual arm grasp diffusion model training and inference."
+
+exp_log_dir: "./experiments_jul/temp/"
+
+seed: 56
+grasps_dir: '/scratch/dualarm/DG16M/dg16m/grasps'
+meshes_dir: '/scratch/dualarm/DA2_15mar/meshes'
+sdf_dir: '/scratch/dualarm/DA2_15mar/sdf'
+train_meshes_list: /scratch/dualarm/DG16M/train_final.txt
+val_meshes_list: /scratch/dualarm/DG16M/test_final.txt
+
+single_object: false
+
+classifier_path: null
+use_attention: False
+use_wandb: False
+num_input_points: 1000
+num_input_grasps: 64
+learning_rate: 0.0001
+unet: unet
+single_arm: False
+
+inference_checkpoint: ./checkpoint/model_epoch_0359_iter_211091.pth
+
+TrainSpecs:
+  batch_size: 8
+  num_epochs: 1000
+  steps_til_summary: 20
+  epochs_til_checkpoint: 20
+  val_batch_size: 5
+  num_workers: 12
+
+NetworkArch: "DualArmPointcloudClassifier" 
+
+NetworkSpecs:
+  feature_encoder:
+    enc_dim: 132
+    in_dim: 3
+    out_dim: 7
+    dims: [512, 512, 512, 512, 512, 512, 512, 512]
+    dropout: [0, 1, 2, 3, 4, 5, 6, 7]
+    dropout_prob: 0.1
+    norm_layers: [0, 1, 2, 3, 4, 5, 6, 7]
+    latent_in: [4]
+    xyz_in_all: false
+    use_tanh: false
+    latent_dropout: false
+    weight_norm: true
+
+  encoder:
+    latent_size: 132
+    hidden_dim: 512
+    grid_resolution: 32
+    plane_resolution: 32
+    plane_type: ["xz", "xy", "yz"]
+    unet_depth: 5
+
+  points:
+    n_points: 30
+    loc: [0.0, 0.0, 0.5]
+    scale: [0.7, 0.5, 0.7]
+
+  decoder:
+    hidden_dim: 512
+
+  pretrained_checkpoint: 
+    path: ./checkpoint/model_epoch_0359_iter_211091.pth
+    to_load: ['vision_encoder', 'feature_encoder'] # or ['none', 'vision_encoder', 'feature_encoder', 'dual_energy_net', 'classifier', 'collision_predictor']
+
+Losses:
+  # - "sdf_loss"
+  # - "dual_projected_denoising_loss"
+  - "classifier_loss"
+  # - "collision_classifier_loss"

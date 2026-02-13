@@ -1,0 +1,22 @@
+name: collision_predictor_Jun28
+seed: 28
+exp_dir: ./experiments/${name}
+
+train_meshes: /scratch/dualarm/DG16M/train_final.txt
+test_meshes: /scratch/dualarm/DG16M/test_final.txt
+mesh_path: /scratch/dualarm/DG16M/dg16m/meshes
+grasp_path: /scratch/dualarm/DG16M/dg16m/grasps
+
+save_model_path: saved_models/
+load_model_path: null
+
+model_weights: ./experiments/collision_predictor_Jun28/09-07-03:16:31/saved_models/model_epoch_100.pt
+
+use_wandb: false
+
+log_interval: 100
+val_interval: 1000
+
+batch_size: 64
+
+gripper_pcd_path: /home/dualarm/dummyhome/md/March2025/dual-arm-grasp-diffusion/gripper.obj
